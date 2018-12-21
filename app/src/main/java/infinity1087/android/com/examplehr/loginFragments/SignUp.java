@@ -44,7 +44,6 @@ import retrofit2.Response;
  */
 public class SignUp extends Fragment implements Validator.ValidationListener {
     //TODO : Set and check Proper layout of fragment_cateogry.xml check using apk
-//TODO: Password and confirmpassword should match
 
 
     Button signUp;
@@ -107,7 +106,7 @@ public class SignUp extends Fragment implements Validator.ValidationListener {
                 String lastn1 = edt_lname.getText().toString().trim();
                 String pass1 = edt_password.getText().toString().trim();
 
-                ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+                ApiInterface apiInterface = ApiClient.getApiClient(ApiClient.BASE_URL).create(ApiInterface.class);
                 apiInterface.savePost(name1, lastn1, pass1).enqueue
                         (new Callback<ExClient>() {
                             @Override

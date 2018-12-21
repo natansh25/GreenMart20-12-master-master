@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -38,6 +39,8 @@ import infinity1087.android.com.examplehr.Services.ApiInterface;
 import infinity1087.android.com.examplehr.ViewPager.LoginViewPager;
 import infinity1087.android.com.examplehr.adapter.RecyclerAdapter;
 import infinity1087.android.com.examplehr.loginFragments.SignIn;
+import infinity1087.android.com.examplehr.model.Banner;
+import infinity1087.android.com.examplehr.model.BannerResults;
 import infinity1087.android.com.examplehr.model.Example;
 import infinity1087.android.com.examplehr.model.Pojo;
 import infinity1087.android.com.examplehr.model.ResponseDatum;
@@ -68,6 +71,7 @@ public class MainActivity extends AppCompatActivity
     private RecyclerAdapter mAdapter;
     private ApiInterface apiInterface;
     private List<ResponseDatum> results;
+    private List<BannerResults> mBannerResults;
     Button btnForget;
 
     List<Pojo> mPojos = new ArrayList<>();
@@ -118,6 +122,7 @@ public class MainActivity extends AppCompatActivity
 
         setupRecyclerView();
         callRetrofit();
+        callRetrofitForBanner();
         //TODO use Banner link to display those image instead of this firebase url
         Pojo pojo = new Pojo("https://firebasestorage.googleapis.com/v0/b/snehnatansh.appspot.com/o/img1.jpg?alt=media&token=922bc5fb-9571-4777-8a89-4efe1da5ecc9");
         mPojos.add(pojo);
@@ -129,15 +134,42 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    private void callRetrofitForBanner() {
+
+        apiInterface = ApiClient.getApiClient(ApiClient.BANNER_URl).create(ApiInterface.class);
+        Call<Banner> call = apiInterface.getBannerImages();
+
+        call.enqueue(new Callback<Banner>() {
+
+            @Override
+            public void onResponse(Call<Banner> call, Response<Banner> response) {
+
+                Log.d("shifu", String.valueOf(response.raw().request().url()));
+
+                mBannerResults = response.body().getResponseData();
+
+            }
+
+            @Override
+            public void onFailure(Call<Banner> call, Throwable t) {
+
+                Log.e("shifu", "Unable to submit post to API." + t.getMessage());
+
+            }
+        });
+    }
+
     private void callRetrofit() {
 
-        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+        apiInterface = ApiClient.getApiClient(ApiClient.BASE_URL).create(ApiInterface.class);
         Call<Example> call = apiInterface.getcontacts();
 
         call.enqueue(new Callback<Example>() {
 
             @Override
             public void onResponse(Call<Example> call, Response<Example> response) {
+
+                Log.d("shifu", String.valueOf(response.raw().request().url()));
 
                 results = response.body().getResponseData();
 
@@ -165,12 +197,12 @@ public class MainActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         new AlertDialog.Builder(this)
-         .setMessage("Are you sure you want to exit?")
+                .setMessage("Are you sure you want to exit?")
                 .setCancelable(false)
                 .setNegativeButton("no", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int i) {
-                     dialog.cancel();
+                        dialog.cancel();
                     }
                 })
                 .setPositiveButton("yes", new DialogInterface.OnClickListener() {
@@ -189,8 +221,7 @@ public class MainActivity extends AppCompatActivity
 
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        }
-        else {
+        } else {
 
         }
     }
@@ -231,7 +262,7 @@ public class MainActivity extends AppCompatActivity
 
         Fragment fragment = null;
         if (id == R.id.nav_camera) {
-                        // Handle the camera action
+            // Handle the camera action
         } else if (id == R.id.nav_gallery) {
 
 //            Intent i = new Intent(MainActivity.this,MyAccount.class);
@@ -243,14 +274,11 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_send) {
 
-   //Intent i = new Intent(MainActivity.this,);
-        }
-
-        else if (id == R.id.nav_settings) {
+            //Intent i = new Intent(MainActivity.this,);
+        } else if (id == R.id.nav_settings) {
             Intent i = new Intent(MainActivity.this, SettingsActivity.class);
             startActivity(i);
-        }
-        else if (id == R.id.nav_help) {
+        } else if (id == R.id.nav_help) {
 
             Intent i = new Intent(MainActivity.this, HelpActivity.class);
             startActivity(i);
