@@ -14,13 +14,14 @@ import java.util.List;
 
 import infinity1087.android.com.examplehr.R;
 import infinity1087.android.com.examplehr.RoundedTransformation;
+import infinity1087.android.com.examplehr.model.BannerTrial;
 import infinity1087.android.com.examplehr.model.Pojo;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyVIewHolder> {
 
-    List<Pojo> mList;
+    List<BannerTrial> mList;
 
-    public RecyclerAdapter(List<Pojo> list) {
+    public RecyclerAdapter(List<BannerTrial> list) {
 
         mList = list;
 
@@ -38,9 +39,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyVIew
     @Override
     public void onBindViewHolder(@NonNull MyVIewHolder myVIewHolder, int i) {
 
-        Pojo pojo = mList.get(i);
-        Picasso.get().load(pojo.getPath()).error(R.drawable.ic_launcher_background).placeholder(R.drawable.img1).transform(new RoundedTransformation(20,0)).into(myVIewHolder.img);
-        Log.d("nan",pojo.getPath());
+        BannerTrial pojo = mList.get(i);
+        Picasso.get().load("http://image.barodaweb.net/api/EGreen/Magic/500/Banner/" +pojo.getImageUrl()+ "/100").error(R.drawable.ic_launcher_background).placeholder(R.drawable.img1).transform(new RoundedTransformation(20, 0)).fit().into(myVIewHolder.img);
+        Log.d("nan", pojo.getImageUrl());
     }
 
     @Override

@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,13 +35,16 @@ import infinity1087.android.com.examplehr.Fragment.SimpleFragmentPageAdapter;
 import infinity1087.android.com.examplehr.NavigationScreens.HelpActivity;
 import infinity1087.android.com.examplehr.NavigationScreens.MyAccount;
 import infinity1087.android.com.examplehr.NavigationScreens.SettingsActivity;
+import infinity1087.android.com.examplehr.Network.NetworkClass;
 import infinity1087.android.com.examplehr.Services.ApiClient;
 import infinity1087.android.com.examplehr.Services.ApiInterface;
 import infinity1087.android.com.examplehr.ViewPager.LoginViewPager;
 import infinity1087.android.com.examplehr.adapter.RecyclerAdapter;
+import infinity1087.android.com.examplehr.appExecuter.AppExecutors;
 import infinity1087.android.com.examplehr.loginFragments.SignIn;
 import infinity1087.android.com.examplehr.model.Banner;
 import infinity1087.android.com.examplehr.model.BannerResults;
+import infinity1087.android.com.examplehr.model.BannerTrial;
 import infinity1087.android.com.examplehr.model.Example;
 import infinity1087.android.com.examplehr.model.Pojo;
 import infinity1087.android.com.examplehr.model.ResponseDatum;
@@ -74,7 +78,7 @@ public class MainActivity extends AppCompatActivity
     private List<BannerResults> mBannerResults;
     Button btnForget;
 
-    List<Pojo> mPojos = new ArrayList<>();
+    List<BannerTrial> mPojos = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,19 +128,18 @@ public class MainActivity extends AppCompatActivity
         callRetrofit();
         callRetrofitForBanner();
         //TODO use Banner link to display those image instead of this firebase url
-        Pojo pojo = new Pojo("https://firebasestorage.googleapis.com/v0/b/snehnatansh.appspot.com/o/img1.jpg?alt=media&token=922bc5fb-9571-4777-8a89-4efe1da5ecc9");
-        mPojos.add(pojo);
+      /*  Pojo pojo = new Pojo("https://firebasestorage.googleapis.com/v0/b/snehnatansh.appspot.com/o/img1.jpg?alt=media&token=922bc5fb-9571-4777-8a89-4efe1da5ecc9");
+        mPojos.add(mPojos);
         Pojo pojo1 = new Pojo("https://firebasestorage.googleapis.com/v0/b/snehnatansh.appspot.com/o/img2.jpg?alt=media&token=b3e6793a-cd24-4860-b4d1-5cc57fecc0da");
-        mPojos.add(pojo1);
+        mPojos.add(pojo1);*/
 
-        mAdapter = new RecyclerAdapter(mPojos);
-        mRecyclerView.setAdapter(mAdapter);
+
 
     }
 
     private void callRetrofitForBanner() {
 
-        apiInterface = ApiClient.getApiClient(ApiClient.BANNER_URl).create(ApiInterface.class);
+       /* apiInterface = ApiClient.getApiClient(ApiClient.BANNER_URl).create(ApiInterface.class);
         Call<Banner> call = apiInterface.getBannerImages();
 
         call.enqueue(new Callback<Banner>() {
@@ -154,6 +157,23 @@ public class MainActivity extends AppCompatActivity
             public void onFailure(Call<Banner> call, Throwable t) {
 
                 Log.e("shifu", "Unable to submit post to API." + t.getMessage());
+                Log.e("shifu", "Unable to submit post to API." + t.getLocalizedMessage() + "     "
+                + t.getCause());
+
+            }
+        });*/
+
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+               URL url= NetworkClass.buildURl();
+
+               mPojos=NetworkClass.fetchMovieData(url);
+               Log.d("yuyu", String.valueOf(mPojos));
+
+                mAdapter = new RecyclerAdapter(mPojos);
+                mRecyclerView.setAdapter(mAdapter);
 
             }
         });

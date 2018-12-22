@@ -1,5 +1,7 @@
 package infinity1087.android.com.examplehr.Services;
 
+import android.util.JsonReader;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -17,8 +19,7 @@ public class ApiClient {
     public static Retrofit retrofit = null;
 
     private static Gson gson = new GsonBuilder()
-            .setLenient()
-            .create();
+            .setLenient().excludeFieldsWithoutExposeAnnotation().create();
 
 
     public static Retrofit getApiClient(String url) {
