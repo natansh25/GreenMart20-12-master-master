@@ -39,7 +39,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:alpha="0.6"
-        android:src="@drawable/milk"
+        tools:src="@drawable/milk"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
@@ -52,7 +52,7 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="8dp"
         android:alpha="0.6"
-        android:src="@drawable/waffer"
+        tools:src="@drawable/waffer"
         app:layout_constraintBottom_toTopOf="@+id/img_item_row"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.567"
@@ -70,7 +70,7 @@
         android:alpha="0.6"
         android:elevation="0dp"
         android:padding="30dp"
-        android:src="@drawable/fruits"
+        tools:src="@drawable/fruits"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/img_veggie"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
@@ -82,9 +82,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:alpha="0.6"
-        android:background="@drawable/shape"
         android:onClick="img_btn1"
-        android:src="@drawable/veg"
+        tools:src="@drawable/veg"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
         tools:ignore="OnClick" />
