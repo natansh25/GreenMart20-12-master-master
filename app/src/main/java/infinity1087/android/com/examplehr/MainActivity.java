@@ -1,6 +1,5 @@
 package infinity1087.android.com.examplehr;
 
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,14 +25,12 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import infinity1087.android.com.examplehr.Fragment.SimpleFragmentPageAdapter;
 import infinity1087.android.com.examplehr.NavigationScreens.HelpActivity;
-import infinity1087.android.com.examplehr.NavigationScreens.MyAccount;
 import infinity1087.android.com.examplehr.NavigationScreens.SettingsActivity;
 import infinity1087.android.com.examplehr.Network.NetworkClass;
 import infinity1087.android.com.examplehr.Services.ApiClient;
@@ -42,11 +39,9 @@ import infinity1087.android.com.examplehr.ViewPager.LoginViewPager;
 import infinity1087.android.com.examplehr.adapter.RecyclerAdapter;
 import infinity1087.android.com.examplehr.appExecuter.AppExecutors;
 import infinity1087.android.com.examplehr.loginFragments.SignIn;
-import infinity1087.android.com.examplehr.model.Banner;
 import infinity1087.android.com.examplehr.model.BannerResults;
 import infinity1087.android.com.examplehr.model.BannerTrial;
 import infinity1087.android.com.examplehr.model.Example;
-import infinity1087.android.com.examplehr.model.Pojo;
 import infinity1087.android.com.examplehr.model.ResponseDatum;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -166,9 +161,9 @@ public class MainActivity extends AppCompatActivity
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-               URL url= NetworkClass.buildURl();
+               URL url= NetworkClass.buildURl(NetworkClass.BANNER_BASE_URL);
 
-               mPojos=NetworkClass.fetchMovieData(url);
+               mPojos=NetworkClass.fetchBannerData(url);
                Log.d("yuyu", String.valueOf(mPojos));
 
                 mAdapter = new RecyclerAdapter(mPojos);
